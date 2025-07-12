@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 function ProductCard({ product }) {
-  const { _id, name, image, price, description } = product; // id အစား _id, imageUrl အစား image
+  const { _id, name, image, price, description } = product;
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001"; // id အစား _id, imageUrl အစား image
   const { addToCart } = useCart();
 
   const handleAddToCart = (e) => {
@@ -19,7 +20,7 @@ function ProductCard({ product }) {
       <Link to={`/products/${_id}`}>
         {/* _id ကို အသုံးပြုပါ */}
         <img
-          src={`http://localhost:5001${image}`} // Backend URL ကို ထည့်ပေးပါ
+          src={`${backendUrl}${image}`} // Backend URL ကို ထည့်ပေးပါ
           alt={name}
           className="w-full h-48 object-cover"
         />

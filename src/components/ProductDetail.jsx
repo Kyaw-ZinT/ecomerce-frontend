@@ -72,7 +72,7 @@ function ProductDetail() {
   const [reviewSuccess, setReviewSuccess] = useState(""); // Review Submit အောင်မြင်ရင် ပြသဖို့ Message
   const [reviewError, setReviewError] = useState(""); // Review Submit လုပ်တဲ့အခါ Error ဖြစ်ရင် ပြသဖို့ Message
   const [loadingReview, setLoadingReview] = useState(false); // Review Submit လုပ်နေစဉ် Loading Status
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   // --- Product Data Fetching Logic ---
   // ဘာကြောင့်၊ ဘာအတွက် သုံးလဲ: Product Detail Page ကို Load လုပ်တဲ့အခါ Product ရဲ့ အသေးစိတ်အချက်အလက်တွေနဲ့
   // Review တွေကို Backend ကနေ ဆွဲယူဖို့အတွက် ဒီ useEffect ကို သုံးပါတယ်။
@@ -81,9 +81,9 @@ function ProductDetail() {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`http://localhost:5001/api/products/${productId}`);
+        const { data } = await axios.get(`${backendUrl}/api/products/${productId}`);
         setProduct(data);
-        setMainImage(`http://localhost:5001${data.image}`);
+        setMainImage(`${backendUrl}${data.image}`);
         setLoading(false);
       } catch (err) {
         setError(err.response && err.response.data.message ? err.response.data.message : err.message);
@@ -124,7 +124,7 @@ function ProductDetail() {
       };
       await axios.post(
         // Backend Review API ကို POST Request ဖြင့် ခေါ်ဆိုခြင်း
-        `http://localhost:5001/api/products/${productId}/reviews`,
+        `${backendUrl}/api/products/${productId}/reviews`,
         { rating, comment }, // Rating နဲ့ Comment Data တွေ ပို့မယ်
         config
       );
@@ -186,12 +186,12 @@ function ProductDetail() {
               />
               <div className="flex space-x-2 mt-4 overflow-x-auto p-2">
                 <img
-                  src={`http://localhost:5001${product.image}`}
+                  src={`${backendUrl}${product.image}`}
                   alt={`${product.name} thumbnail`}
                   className={`w-20 h-20 object-cover rounded-md cursor-pointer border-2 ${
-                    mainImage === `http://localhost:5001${product.image}` ? "border-blue-600" : "border-transparent"
+                    mainImage === `${backendUrl}${product.image}` ? "border-blue-600" : "border-transparent"
                   } hover:border-blue-500 transition-all duration-200`}
-                  onClick={() => setMainImage(`http://localhost:5001${product.image}`)}
+                  onClick={() => setMainImage(`${backendUrl}${product.image}`)}
                 />
               </div>
             </div>

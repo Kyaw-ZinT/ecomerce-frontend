@@ -11,7 +11,7 @@ function LoginPage() {
   const [error, setError] = useState(""); // Error Message ပြသရန် State
   const [loading, setLoading] = useState(false); // Loading State
   const { login } = useAuth();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   const handleSubmit = async (e) => {
     // async function ဖြစ်အောင် ပြောင်းပါ
     e.preventDefault();
@@ -27,7 +27,7 @@ function LoginPage() {
 
       // Backend Login API ကို ခေါ်ဆိုခြင်း
       const { data } = await axios.post(
-        "http://localhost:5001/api/users/login", // သင့် Backend Port (5001) ကို မှန်ကန်စွာ ထည့်ပါ။
+        `${backendUrl}/api/users/login`, // သင့် Backend Port (5001) ကို မှန်ကန်စွာ ထည့်ပါ။
         { email, password },
         config
       );

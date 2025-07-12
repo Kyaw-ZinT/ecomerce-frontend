@@ -5,7 +5,7 @@ import { useCart } from "../context/CartContext";
 
 function CartItem({ item }) {
   const { updateQuantity, removeFromCart } = useCart();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value);
     updateQuantity(item.id, newQuantity);
@@ -20,7 +20,7 @@ function CartItem({ item }) {
       <div className="flex items-center space-x-4">
         {/* Item Image */}
         <img
-          src={`http://localhost:5001${item.image}`} // item.imageUrl အစား item.image ကိုသုံးပြီး Backend URL ကို ထည့်ပေးပါ
+          src={`${backendUrl}${item.image}`} // item.imageUrl အစား item.image ကိုသုံးပြီး Backend URL ကို ထည့်ပေးပါ
           alt={item.name}
           className="w-24 h-24 object-cover rounded-md"
         />

@@ -9,7 +9,7 @@ function UserEditScreen() {
   const { id: userId } = useParams(); // URL ကနေ User ID ကို ရယူပါ
   const navigate = useNavigate();
   const { user } = useAuth(); // Login ဝင်ထားတဲ့ Admin user data ကို ယူမယ်
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false); // Admin role status
@@ -33,7 +33,7 @@ function UserEditScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const { data } = await axios.get(`http://localhost:5001/api/users/${userId}`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        const { data } = await axios.get(`${backendUrl}/api/users/${userId}`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
 
         // Fetch လုပ်လာတဲ့ User Data တွေကို State ထဲ ထည့်ပါ
         setName(data.name);
@@ -66,7 +66,7 @@ function UserEditScreen() {
 
       // User Profile ကို Backend မှာ Update လုပ်
       const { data } = await axios.put(
-        `http://localhost:5001/api/users/${userId}`, // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        `${backendUrl}/api/users/${userId}`, // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         { name, email, isAdmin }, // isAdmin status ကိုပါ ထည့်ပို့
         config
       );

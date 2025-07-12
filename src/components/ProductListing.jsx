@@ -45,8 +45,9 @@ function ProductListing() {
       try {
         setLoading(true);
         // Backend API ကို Query Parameters တွေနဲ့ ပို့မယ်
+        const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
         const { data } = await axios.get(
-          `http://localhost:5001/api/products?pageNumber=${pageNumberParam}&keyword=${keywordParam}&category=${categoryParam}&minPrice=${minPriceParam}&maxPrice=${maxPriceParam}`
+          `${backendUrl}/api/products?pageNumber=${pageNumberParam}&keyword=${keywordParam}&category=${categoryParam}&minPrice=${minPriceParam}&maxPrice=${maxPriceParam}`
         );
         setProducts(data.products);
         setPage(data.page);

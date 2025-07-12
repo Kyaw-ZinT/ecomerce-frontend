@@ -9,7 +9,7 @@ function OrderScreen() {
   const { id: orderId } = useParams();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,7 +31,7 @@ function OrderScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const { data } = await axios.get(`http://localhost:5001/api/orders/${orderId}`, config);
+        const { data } = await axios.get(`${backendUrl}/api/orders/${orderId}`, config);
         setOrder(data);
         setLoading(false);
       } catch (err) {
@@ -67,7 +67,7 @@ function OrderScreen() {
           update_time: new Date().toISOString(),
           payer_email: user.email,
         };
-        await axios.put(`http://localhost:5001/api/orders/${orderId}/pay`, paymentResult, config);
+        await axios.put(`${backendUrl}/api/orders/${orderId}/pay`, paymentResult, config);
         alert("Order marked as Paid!");
         setLoadingPay(false);
         setOrder((prevOrder) => ({ ...prevOrder, isPaid: true, paidAt: new Date().toISOString(), paymentResult })); // UI ကို Update လုပ်
@@ -88,7 +88,7 @@ function OrderScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        await axios.put(`http://localhost:5001/api/orders/${orderId}/deliver`, {}, config);
+        await axios.put(`${backendUrl}/api/orders/${orderId}/deliver`, {}, config);
         alert("Order marked as delivered!");
         setLoadingDeliver(false);
         setOrder((prevOrder) => ({ ...prevOrder, isDelivered: true, deliveredAt: new Date().toISOString() })); // UI ကို Update လုပ်
@@ -174,7 +174,7 @@ function OrderScreen() {
                           className="flex items-center space-x-4 border-b pb-4 last:pb-0 last:border-b-0"
                         >
                           <img
-                            src={`http://localhost:5001${item.image}`}
+                            src={`${backendUrl}${item.image}`}
                             alt={item.name}
                             className="w-20 h-20 object-cover rounded-md"
                           />

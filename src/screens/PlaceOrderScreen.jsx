@@ -19,6 +19,7 @@ const stripePromise = loadStripe(
 ); // Replace with your actual key
 
 function PlaceOrderScreen() {
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   const { cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice, clearCart } =
@@ -52,7 +53,7 @@ function PlaceOrderScreen() {
           },
         };
         const { data } = await axios.post(
-          `http://localhost:5001/api/orders/create-payment-intent`, // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+          `${backendUrl}/api/orders/create-payment-intent`, // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
           { amount: Number(totalPrice) }, // Total price ကို ပို့မယ်
           config
         );
@@ -79,7 +80,7 @@ function PlaceOrderScreen() {
       };
 
       const { data } = await axios.post(
-        "http://localhost:5001/api/orders", // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        `${backendUrl}/api/orders`, // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         {
           orderItems: cartItems,
           shippingAddress,
@@ -134,7 +135,7 @@ function PlaceOrderScreen() {
                 {cartItems.map((item) => (
                   <li key={item.id} className="flex items-center space-x-4 border-b pb-4 last:pb-0 last:border-b-0">
                     <img
-                      src={`http://localhost:5001${item.image}`}
+                      src={`${backendUrl}${item.image}`}
                       alt={item.name}
                       className="w-20 h-20 object-cover rounded-md"
                     />

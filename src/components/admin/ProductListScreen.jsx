@@ -11,7 +11,7 @@ function ProductListScreen() {
   const [error, setError] = useState("");
   const { user } = useAuth(); // Login ဝင်ထားတဲ့ user (admin) data ကို ယူမယ်
   const navigate = useNavigate();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   useEffect(() => {
     // Admin မဟုတ်ရင် Login Page ကို ပြန်ပို့မယ်
     if (!user || !user.isAdmin) {
@@ -26,7 +26,7 @@ function ProductListScreen() {
             Authorization: `Bearer ${user.token}`, // Admin Token ကို Request Headers မှာ ပို့မယ်
           },
         };
-        const { data } = await axios.get("http://localhost:5001/api/products", config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        const { data } = await axios.get(`${backendUrl}/api/products`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         setProducts(data.products);
         setLoading(false);
       } catch (err) {
@@ -47,7 +47,7 @@ function ProductListScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        await axios.delete(`http://localhost:5001/api/products/${id}`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        await axios.delete(`${backendUrl}/api/products/${id}`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         alert("Product Deleted Successfully!");
         setProducts(products.filter((p) => p._id !== id)); // List ကနေ ဖျက်လိုက်ပါ
         setLoading(false);
@@ -68,7 +68,7 @@ function ProductListScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const { data } = await axios.post("http://localhost:5001/api/products", {}, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        const { data } = await axios.post(`${backendUrl}/api/products`, {}, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         alert("New Product Created! Now redirecting to edit page.");
         navigate(`/admin/products/${data._id}/edit`); // New Product ရဲ့ Edit Page ကို သွားပါ
       } catch (err) {

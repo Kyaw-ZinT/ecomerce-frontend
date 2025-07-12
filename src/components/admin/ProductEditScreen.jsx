@@ -9,7 +9,7 @@ function ProductEditScreen() {
   const { id: productId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState(""); // Image URL ကို သိမ်းဖို့
@@ -37,7 +37,7 @@ function ProductEditScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const { data } = await axios.get(`http://localhost:5001/api/products/${productId}`, config);
+        const { data } = await axios.get(`${backendUrl}/api/products/${productId}`, config);
 
         setName(data.name);
         setPrice(data.price);
@@ -70,7 +70,7 @@ function ProductEditScreen() {
       };
 
       const { data } = await axios.put(
-        `http://localhost:5001/api/products/${productId}`,
+        `${backendUrl}/api/products/${productId}`,
         { name, price, image, brand, category, countInStock, description }, // image URL ကိုပါ ပို့မယ်
         config
       );
@@ -100,7 +100,7 @@ function ProductEditScreen() {
         },
       };
 
-      const { data } = await axios.post("http://localhost:5001/api/upload", formData, config); // Backend Upload API ကို ခေါ်ဆိုခြင်း
+      const { data } = await axios.post(`${backendUrl}/api/upload`, formData, config); // Backend Upload API ကို ခေါ်ဆိုခြင်း
 
       setImage(data); // Backend ကနေ ပြန်လာတဲ့ Image Path ကို setImage မှာ ထည့်မယ်
       setUploading(false);

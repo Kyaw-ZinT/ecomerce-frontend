@@ -11,7 +11,7 @@ function UserListScreen() {
   const [error, setError] = useState("");
   const { user, logout } = useAuth(); // Login ဝင်ထားတဲ့ user (admin) data ကို ယူမယ်
   const navigate = useNavigate();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   useEffect(() => {
     // Admin မဟုတ်ရင် Login Page ကို ပြန်ပို့မယ်
     if (!user || !user.isAdmin) {
@@ -27,7 +27,7 @@ function UserListScreen() {
             Authorization: `Bearer ${user.token}`, // Admin Token ကို Request Headers မှာ ပို့မယ်
           },
         };
-        const { data } = await axios.get("http://localhost:5001/api/users", config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        const { data } = await axios.get(`${backendUrl}/api/users`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         setUsers(data);
         setLoading(false);
       } catch (err) {
@@ -53,7 +53,7 @@ function UserListScreen() {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        await axios.delete(`http://localhost:5001/api/users/${id}`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        await axios.delete(`${backendUrl}/api/users/${id}`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         alert("User Deleted Successfully!");
         setUsers(users.filter((u) => u._id !== id)); // List ကနေ ဖျက်လိုက်ပါ
         setLoading(false);

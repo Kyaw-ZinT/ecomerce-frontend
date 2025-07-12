@@ -22,7 +22,7 @@ function UserProfileScreen() {
   const [orders, setOrders] = useState([]); // User's orders
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [errorOrders, setErrorOrders] = useState("");
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   // ဘာကြောင့်၊ ဘာအတွက် သုံးလဲ: User Login ဝင်ထားခြင်း ရှိမရှိ စစ်ဆေးပြီး မဝင်ထားရင် Login Page ကို Redirect လုပ်ဖို့။ User Login ဝင်ထားရင် သူ့ရဲ့ Profile အချက်အလက်တွေကို Backend ကနေ ဆွဲယူဖို့။
   useEffect(() => {
     if (!isAuthenticated) {
@@ -37,7 +37,7 @@ function UserProfileScreen() {
             },
           };
           // User Profile ကို ဆွဲယူ
-          const { data } = await axios.get("http://localhost:5001/api/users/profile", config);
+          const { data } = await axios.get(`${backendUrl}/api/users/profile`, config);
           setName(data.name);
           setEmail(data.email);
           setLoading(false);
@@ -58,7 +58,7 @@ function UserProfileScreen() {
             },
           };
           // User ရဲ့ Order History ကို ဆွဲယူ
-          const { data } = await axios.get("http://localhost:5001/api/orders/myorders", config);
+          const { data } = await axios.get(`${backendUrl}/api/orders/myorders`, config);
           setOrders(data);
           setLoadingOrders(false);
         } catch (err) {
@@ -93,7 +93,7 @@ function UserProfileScreen() {
       };
 
       // User Profile ကို Backend မှာ Update လုပ်
-      const { data } = await axios.put("http://localhost:5001/api/users/profile", { name, email, password }, config);
+      const { data } = await axios.put(`${backendUrl}/api/users/profile`, { name, email, password }, config);
 
       setMessage("Profile Updated Successfully!");
       authLogin(data); // Auth Context မှာ User Info ကို Update လုပ် (token လည်း ပြောင်းနိုင်လို့)

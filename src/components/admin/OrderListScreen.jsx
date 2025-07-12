@@ -11,7 +11,7 @@ function OrderListScreen() {
   const [error, setError] = useState("");
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
+  const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5001";
   // ဘာကြောင့်၊ ဘာအတွက် သုံးလဲ: Admin မဟုတ်ရင် Login Page ကို Redirect လုပ်ဖို့နဲ့ မှာယူမှုတွေအားလုံးကို Backend ကနေ ဆွဲယူဖို့။
   useEffect(() => {
     if (!user || !user.isAdmin) {
@@ -27,7 +27,7 @@ function OrderListScreen() {
             Authorization: `Bearer ${user.token}`, // Admin Token ကို Request Headers မှာ ပို့မယ်
           },
         };
-        const { data } = await axios.get("http://localhost:5001/api/orders", config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
+        const { data } = await axios.get(`${backendUrl}/api/orders`, config); // Backend Port ကို မှန်ကန်စွာ ထည့်ပါ။
         setOrders(data);
         setLoading(false);
       } catch (err) {
